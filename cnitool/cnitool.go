@@ -35,6 +35,7 @@ const (
 
 	CmdAdd = "add"
 	CmdDel = "del"
+	CmdGet = "get"
 )
 
 func parseArgs(args string) ([][2]string, error) {
@@ -114,6 +115,12 @@ func main() {
 		exit(err)
 	case CmdDel:
 		exit(cninet.DelNetworkList(netconf, rt))
+	case CmdGet:
+		result, err := cninet.getNetworkList(netconf, rt)
+		if result != nil {
+			_ = result.Print()
+		}
+		exit(err)
 	}
 }
 
@@ -123,6 +130,7 @@ func usage() {
 	fmt.Fprintf(os.Stderr, "%s: Add or remove network interfaces from a network namespace\n", exe)
 	fmt.Fprintf(os.Stderr, "  %s %s <net> <netns>\n", exe, CmdAdd)
 	fmt.Fprintf(os.Stderr, "  %s %s <net> <netns>\n", exe, CmdDel)
+	fmt.Fprintf(os.Stderr, "  %s %s <net> <netns>\n", exe, CmdGet)
 	os.Exit(1)
 }
 
